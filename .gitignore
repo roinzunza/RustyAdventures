@@ -1,0 +1,23 @@
+# Ignore compiled binary files
+/target/
+
+# Ignore Cargo lock file
+Cargo.lock
+
+# Ignore IDE/Editor specific files
+.idea/
+.vscode/
+
+# Ignore system and editor backup files
+**~
+*.swp
+*.bak
+
+# Ignore hidden files (e.g., macOS .DS_Store)
+.*.swp
+
+# Ignore environment-specific files
+.env
+.env.*
+
+# Ignore any sensitive or generated files
