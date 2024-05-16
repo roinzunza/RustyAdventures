@@ -58,6 +58,9 @@ fn read_students_txt() -> Result <(Vec<(String, u8, String)>,HashMap<String, u8>
 }
 
 fn read_csv() -> Result<(), String>{
+
+    let mut this_hash_map = HashMap::<String, u8>::new();
+
     let path = Path::new("student.csv");
 
     // open file
@@ -69,8 +72,17 @@ fn read_csv() -> Result<(), String>{
     for result in rdr.records() {
         let record = result.map_err(|e| e.to_string())?;
         let name = record.get(0).ok_or("failed to get name")?;
-        println!("{}", name.to_string());
+        let age = record.get(1).ok_or("failed to get age")?.parse::<u8>().map_err(|e| e.to_string())?;
+        this_hash_map.insert(name.to_string(), age);
 
+    }
+
+    this_hash_map.remove("Sarah Davis");
+    if this_hash_map.contains_key("Sarah Davis") {
+        info!("Name was not removed");
+
+    } else {
+        info!("Name was removed");
     }
     Ok(())
 }
