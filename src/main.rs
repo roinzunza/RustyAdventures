@@ -1,6 +1,9 @@
 use std::fs;
 use std::collections::HashMap;
 use log::{LevelFilter, info, error};
+use csv::ReaderBuilder;
+use std::fs::File;
+use std::path::Path;
 
 // Initialize the logger at the module level
 pub fn init_logger() {
@@ -21,6 +24,7 @@ fn main() {
         Ok((this_student_vec, this_student_hash)) => info!("Success: {:?} {:?}", this_student_vec, this_student_hash),
         Err(msg) => error!("{}", msg),
     }
+    read_csv();
 }
 
 
@@ -51,4 +55,22 @@ fn read_students_txt() -> Result <(Vec<(String, u8, String)>,HashMap<String, u8>
     }
     // Ok result expects tuple Vec, Hash
     Ok((this_student_vec, this_student_hash))
+}
+
+fn read_csv() -> Result<(), String>{
+    let path = Path::new("student.csv");
+
+    // open file
+    let file = File::open(path).map_err(|e| e.to_string())?;
+    // create csv reader
+    let mut rdr = ReaderBuilder::new().from_reader(file);
+    let _ = rdr.headers().map_err(|e| e.to_string())?;
+
+    for result in rdr.records() {
+        let record = result.map_err(|e| e.to_string())?;
+        let name = record.get(0).ok_or("failed to get name")?;
+        println!("{}", name.to_string());
+
+    }
+    Ok(())
 }
