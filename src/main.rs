@@ -18,7 +18,7 @@ fn main() {
 
     let result = read_students_txt();
     match result {
-        Ok((this_student_vec, this_student_hash)) => info!("Success"),
+        Ok((this_student_vec, this_student_hash)) => info!("Success: {:?} {:?}", this_student_vec, this_student_hash),
         Err(msg) => error!("{}", msg),
     }
 }
